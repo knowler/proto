@@ -1,8 +1,8 @@
-var atImport = require("postcss-import");
+var atImport = require('postcss-import');
 var autoprefixer = require('autoprefixer');
 var browserSync = require('browser-sync').create();
 var cssnano = require('cssnano');
-var cssnext = require('cssnext');
+var cssnext = require('postcss-cssnext');
 var gulp = require('gulp');
 var mqpacker = require('css-mqpacker');
 var postcss = require('gulp-postcss');
@@ -15,36 +15,36 @@ gulp.task('css', function () {
   var processors = [
     atImport,
     cssnext(),
-    autoprefixer({browsers: ['last 1 version']}),
+    autoprefixer({browsers: ['last 3 version']}),
     mqpacker
   ];
   var min = [
     cssnano
   ];
   return gulp.src('./src/*.css')
-    .pipe(sourcemaps.init())
-    .pipe(postcss(processors))
-    .pipe(uncss({
-      html: ['./*.html']
-    }))
-    .pipe(gulp.dest('css'))
-    .pipe(size({gzip: false, showFiles: true, title:'css'}))
-    .pipe(postcss(min))
-    .pipe(rename({ extname: '.min.css' }))
-    .pipe(gulp.dest('css'))
-    .pipe(size({gzip: false, showFiles: true, title:'minified'}))
-    .pipe(sourcemaps.write('.'))
-    .pipe(browserSync.stream());
+  .pipe(sourcemaps.init())
+  .pipe(postcss(processors))
+  .pipe(uncss({
+    html: ['./*.html']
+  }))
+  .pipe(gulp.dest('css'))
+  .pipe(size({gzip: false, showFiles: true, title:'css'}))
+  .pipe(postcss(min))
+  .pipe(rename({ extname: '.min.css' }))
+  .pipe(gulp.dest('css'))
+  .pipe(size({gzip: false, showFiles: true, title:'minified'}))
+  .pipe(sourcemaps.write('.'))
+  .pipe(browserSync.stream());
 });
 
 // Initialize browser-sync which starts a static server also allows for
 // browsers to reload on filesave
 gulp.task('browser-sync', function() {
-    browserSync.init(null, {
-        server: {
-            baseDir: "./"
-        }
-    });
+  browserSync.init({
+    server: {
+      baseDir: './'
+    }
+  });
 });
 
 // Function to call for reloading browsers
@@ -57,5 +57,5 @@ gulp.task('bs-reload', function () {
  */
 gulp.task('default', ['css', 'bs-reload', 'browser-sync'], function(){
   gulp.start(['css', 'bs-reload']);
-  gulp.watch(['src/*.css','*.html'], ['css']);
+  gulp.watch(['src/*.css','*.html','*.php'], ['css']);
 });
