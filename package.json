@@ -1,33 +1,28 @@
 {
   "name": "proto",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Prototyping Environment",
   "author": "Nathan Knowler <nathan@knowler.me>",
-  "homepage": "http://knowler.io/proto/",
   "private": true,
   "dependencies": {
-    "atcss": "^2.0.0",
-    "autoprefixer": "^6.0.3",
-    "bower": "^1.6.3",
-    "browser-sync": "^2.9.11",
-    "css-mqpacker": "^4.0.0",
-    "cssnano": "^3.3.1",
-    "cssnext": "^1.8.4",
-    "gulp": "^3.9.0",
-    "gulp-postcss": "^6.0.1",
+    "autoprefixer": "^6.3.6",
+    "browser-sync": "^2.12.12",
+    "css-mqpacker": "^5.0.1",
+    "cssnano": "^3.7.0",
+    "postcss-cssnext": "^2.6.0",
+    "gulp": "^3.9.1",
+    "gulp-postcss": "^6.1.1",
     "gulp-rename": "^1.2.2",
-    "gulp-size": "^2.0.0",
+    "gulp-size": "^2.1.0",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-uncss": "^1.0.4",
-    "postcss-import": "^7.0.0",
-    "tachyons": "^3.0.1"
+    "gulp-uncss": "^1.0.5",
+    "postcss-import": "^8.1.2",
+    "tachyons": "^4.0.0-beta.29",
+    "font-awesome": "^4.6.3",
+    "jquery": "^2.2.4"
   },
   "scripts": {
-    "build": "bower install && gulp"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/knowler/proto.git"
+    "build": "gulp"
   },
   "licenses": {
     "type": "MIT",
