@@ -1,61 +1,31 @@
-var atImport = require('postcss-import');
-var autoprefixer = require('autoprefixer');
-var browserSync = require('browser-sync').create();
-var cssnano = require('cssnano');
-var cssnext = require('postcss-cssnext');
-var gulp = require('gulp');
-var mqpacker = require('css-mqpacker');
 var postcss = require('gulp-postcss');
-var rename = require('gulp-rename');
-var size = require('gulp-size');
+var fs = require('fs');
 var sourcemaps = require('gulp-sourcemaps');
+var gulp = require('gulp');
 var uncss = require('gulp-uncss');
+var size = require('gulp-size');
+var atImport = require("postcss-import");
+var browserSync = require('browser-sync').create();
 
-gulp.task('css', function () {
-  var processors = [
-    atImport,
-    cssnext(),
-    autoprefixer({browsers: ['last 3 version']}),
-    mqpacker
-  ];
-  var min = [
-    cssnano
-  ];
-  return gulp.src('./src/*.css')
-  .pipe(sourcemaps.init())
-  .pipe(postcss(processors))
-  .pipe(uncss({
-    html: ['./*.html']
-  }))
-  .pipe(gulp.dest('css'))
-  .pipe(size({gzip: false, showFiles: true, title:'css'}))
-  .pipe(postcss(min))
-  .pipe(rename({ extname: '.min.css' }))
-  .pipe(gulp.dest('css'))
-  .pipe(size({gzip: false, showFiles: true, title:'minified'}))
-  .pipe(sourcemaps.write('.'))
-  .pipe(browserSync.stream());
-});
-
-// Initialize browser-sync which starts a static server also allows for
-// browsers to reload on filesave
-gulp.task('browser-sync', function() {
+gulp.task('serve', ['css'], function() {
   browserSync.init({
     server: {
-      baseDir: './'
+      baseDir: "./"
     }
   });
+  gulp.watch(['node_modules/tachyons/css/*.min.css', 'src/styles/*.css', '*.html' ], ['css']);
+  gulp.watch('*.html').on('change', browserSync.reload);
 });
 
-// Function to call for reloading browsers
-gulp.task('bs-reload', function () {
-    browserSync.reload();
+gulp.task('css', function () {
+  return gulp.src('./src/styles/main.css')
+    .pipe( sourcemaps.init() )
+    .pipe( postcss([ require('postcss-import'), require('cssnano'), require('autoprefixer') ]) )
+    .pipe( uncss({ html: ['*.html'] }) )
+    .pipe( size({gzip: false, showFiles: true, title:'css'}) )
+    .pipe( sourcemaps.write('.') )
+    .pipe( gulp.dest('./dist/styles') )
+    .pipe(browserSync.stream());
 });
 
-/**
- * DEFAULT TASK
- */
-gulp.task('default', ['css', 'bs-reload', 'browser-sync'], function(){
-  gulp.start(['css', 'bs-reload']);
-  gulp.watch(['src/*.css','*.html','*.php'], ['css']);
-});
+gulp.task('default', ['serve']);

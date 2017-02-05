@@ -1,9 +1,3 @@
-# proto
+# web
 
-This is my prototyping environment.
-
-## Get Started
-
-```sh
-npm i && gulp
-```
+Boilerplate for websites.
